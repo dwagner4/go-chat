@@ -1,0 +1,110 @@
+:root {
+  --prussian-blue: #003049ff;
+  --maximum-red: #d62828ff;
+  --orange: #f77f00ff;
+  --maximum-yellow-red: #fcbf49ff;
+  --lemon-meringue: #eae2b7ff;
+  --primary-text-color: #003049ff;
+  --secondary-bg-color: #d62828;
+  --secondary-text-color: #f77f00ff;
+  --accent-color: #fcbf49ff;
+  --main-bg-color: #eae2b7ff;
+}
+
+html,
+body {
+  /* remove margins and scroll bars */
+  margin: 0;
+  padding: 0;
+  overflow: hidden;
+
+  /* style text */
+  text-align: center;
+  font-size: 12px;
+  font-family: Sans-Serif;
+
+  /* color text */
+  color: var(--primary-text-color);
+
+}
+
+/* Style the links inside the navigation bar */
+.btn {
+  color: var(--main-bg-color);
+  text-align: left;
+  padding-bottom: 5px;
+  /* width: 150px; */
+  text-decoration: none;
+  font-size: 16px;
+  font-weight:bold;
+  opacity: 0.5;
+  /* border-bottom: 2px solid var(--main-bg-color); */
+  padding: 10px;
+  border-radius: 10px;
+  background-color: var(--maximum-red);
+}
+
+/* Change the color of links on hover */
+.btn:hover {
+  opacity: 1;
+  cursor: pointer;
+  font-size: 24px;
+}
+
+#homebtn {
+  position: fixed;
+  top: 50px;
+  left: 3%;
+}
+
+
+#termbtn {
+  position: fixed;
+  top: 125px;
+  left: 3%;
+}
+
+#loginbtn {
+  position: fixed;
+  top: 200px;
+  left: 3%;
+}
+#cancelbtn {
+  position: fixed;
+  top: 275px;
+  left: 3%;
+}
+#successbtn {
+  position: fixed;
+  top: 350px;
+  left: 3%;
+}
+#errorbtn {
+  position: fixed;
+  top: 425px;
+  left: 3%;
+}
+
+
+#caption {
+  color: var(--maximum-yellow-red);
+  position: absolute;
+  margin-left: 25%;
+  width: 50%;
+  margin-top: 30px;
+  font-size: 32px;
+  font-weight:bold;
+  text-align: center;
+}
+
+@media screen and (min-device-width: 320px) and (max-device-width: 780px) {
+  /* .btn {
+    position: fixed;
+    bottom: 20px;
+  } */
+  #caption {
+    position: absolute;
+    margin-top: 15px;
+    font-size: 16px;
+  }
+}
