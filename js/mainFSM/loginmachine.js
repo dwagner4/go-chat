@@ -4,13 +4,15 @@ const loginmachine = {
   initial: 'unauthenticated',
   states: {
     unauthenticated: {
+      entry: [() => console.log('fuck you too')],
       on: {
         LOGIN: {
-          target: 'loading',
+          target: 'usercheck',
+          actions: [() => console.log('fuck you')],
         },
       },
     },
-    loading: {
+    usercheck: {
       on: {
         CANCEL: {
           target: 'unauthenticated',
@@ -26,7 +28,7 @@ const loginmachine = {
     error: {
       on: {
         LOGIN: {
-          target: 'loading',
+          target: 'usercheck',
         },
         CANCEL: {
           target: 'unauthenticated',

@@ -34,15 +34,31 @@ import { mainService } from './mainFSM/mainMachine.js';
  * homebtn.onmouseout = msgout
  */
 const homebtn = document.querySelector('#homebtn');
-
+homebtn.onclick = () => {
+  mainService.send({ type: 'HOME' });
+};
 const termbtn = document.querySelector('#termbtn');
+termbtn.onclick = () => {
+  mainService.send({ type: 'TERM' });
+};
+const loginbtn = document.querySelector('#loginbtn');
+loginbtn.onclick = () => {
+  mainService.send({ type: 'LOGIN' });
+};
+const cancelbtn = document.querySelector('#cancelbtn');
+cancelbtn.onclick = () => {
+  mainService.send({ type: 'CANCEL' });
+};
+const successbtn = document.querySelector('#successbtn');
+successbtn.onclick = () => {
+  mainService.send({ type: 'SUCCESS' });
+};
+const errorbtn = document.querySelector('#errorbtn');
+errorbtn.onclick = () => {
+  mainService.send({ type: 'ERROR' });
+};
 
 const caption = document.querySelector('#caption');
-
-const loginbtn = document.querySelector('#loginbtn');
-const cancelbtn = document.querySelector('#cancelbtn');
-const successbtn = document.querySelector('#successbtn');
-const errorbtn = document.querySelector('#errorbtn');
 
 // const fadeDuration = 1;
 
@@ -56,33 +72,12 @@ const errorbtn = document.querySelector('#errorbtn');
 // });
 // stage.init();
 
-homebtn.onclick = () => {
-  mainService.send({ type: 'HOME' });
-};
 // gsap.to(stage.overlayMaterial.uniforms.uAlpha, {
 //   duration: fadeDuration,
 //   value: 1,
 //   onComplete: () => mainService.send({ type: 'HOME' }),
 // });
 // };
-termbtn.onclick = () => {
-  mainService.send({ type: 'TERM' });
-};
-
-loginbtn.onclick = () => {
-  mainService.send({ type: 'LOGIN' });
-};
-
-cancelbtn.onclick = () => {
-  mainService.send({ type: 'CANCEL' });
-};
-
-successbtn.onclick = () => {
-  mainService.send({ type: 'SUCCESS' });
-};
-errorbtn.onclick = () => {
-  mainService.send({ type: 'ERROR' });
-};
 
 /**
  * concatenates state.value keys with final text value, assumes xState state.value

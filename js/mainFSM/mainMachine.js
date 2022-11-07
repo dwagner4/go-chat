@@ -1,21 +1,120 @@
-import { appmachine, appfunctions } from './appmachine.js';
-import { loginmachine } from './loginmachine.js';
+import { guestfunctions } from './guestmachine.js';
 
 // eslint-disable-next-line no-undef
 const { createMachine, interpret } = XState;
 
-/** add appmachine child fsm to the authenticated state of login */
-const mainfsm = loginmachine;
-let authstate = mainfsm.states.authenticated;
-authstate = { authstate, ...appmachine };
-mainfsm.states.authenticated = authstate;
+const guestmachine = {
+  context: {},
+  id: 'guestMachine',
+  initial: 'home',
+  states: {
+    home: {
+      entry: ['guesthome'],
+      on: {
+        HOME: { target: 'home' },
+        TERM: { target: 'term' },
+      },
+    },
+    term: {
+      entry: ['guestterm'],
+      on: {
+        HOME: { target: 'home' },
+        TERM: { target: 'term' },
+      },
+    },
+  },
+};
+
+const usermachine = {
+  context: {},
+  id: 'userMachine',
+  initial: 'home',
+  states: {
+    home: {
+      entry: ['userhome'],
+      on: {
+        HOME: { target: 'home' },
+        TERM: { target: 'term' },
+      },
+    },
+    term: {
+      entry: ['userterm'],
+      on: {
+        HOME: { target: 'home' },
+        TERM: { target: 'term' },
+      },
+    },
+  },
+};
+
+const loginmachine = {
+  context: {},
+  id: 'mainMachine',
+  initial: 'unauthenticated',
+  states: {
+    unauthenticated: {
+      on: {
+        LOGIN: {
+          target: 'usercheck',
+        },
+      },
+      ...guestmachine,
+    },
+    usercheck: {
+      on: {
+        CANCEL: {
+          target: 'unauthenticated',
+        },
+        ERROR: {
+          target: 'error',
+        },
+        SUCCESS: {
+          target: 'authenticated',
+        },
+      },
+    },
+    error: {
+      on: {
+        LOGIN: {
+          target: 'usercheck',
+        },
+        CANCEL: {
+          target: 'unauthenticated',
+        },
+      },
+    },
+    authenticated: {
+      on: {
+        EDITPROFILE: {
+          target: 'editprofile',
+        },
+        LOGOUT: {
+          target: 'unauthenticated',
+        },
+      },
+      ...usermachine,
+    },
+    editprofile: {
+      on: {
+        ERROR: {
+          target: 'editprofile',
+          internal: false,
+        },
+        SUCCESS: {
+          target: 'authenticated',
+        },
+      },
+    },
+  },
+};
 
 // eslint-disable-next-line prefer-const
-let mainfunctions = appfunctions;
+let mainfunctions = guestfunctions;
 
-const mainMachine = createMachine(mainfsm, mainfunctions);
+const mainMachine = createMachine(loginmachine, mainfunctions);
 
 const mainService = interpret(mainMachine);
+
 mainService.onTransition(state => console.log(state.value));
 mainService.start();
 
