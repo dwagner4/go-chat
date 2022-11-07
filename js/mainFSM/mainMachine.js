@@ -1,123 +1,29 @@
-import { guestfunctions } from './guestmachine.js';
-import { userfunctions } from './usermachine.js';
+import { loginmachine } from './loginmachine.js';
+import { guestfunctions, guestmachine } from './guestmachine.js';
+import { userfunctions, usermachine } from './usermachine.js';
 
 // eslint-disable-next-line no-undef
 const { createMachine, interpret } = XState;
 
-const guestmachine = {
-  context: {},
-  id: 'guestMachine',
-  initial: 'home',
-  states: {
-    home: {
-      entry: ['guesthome'],
-      on: {
-        HOME: { target: 'home' },
-        TERM: { target: 'term' },
-      },
-    },
-    term: {
-      entry: ['guestterm'],
-      on: {
-        HOME: { target: 'home' },
-        TERM: { target: 'term' },
-      },
-    },
-  },
-};
-
-const usermachine = {
-  context: {},
-  id: 'userMachine',
-  initial: 'home',
-  states: {
-    home: {
-      entry: ['userhome'],
-      on: {
-        HOME: { target: 'home' },
-        TERM: { target: 'term' },
-      },
-    },
-    term: {
-      entry: ['userterm'],
-      on: {
-        HOME: { target: 'home' },
-        TERM: { target: 'term' },
-      },
-    },
-  },
-};
-
-const loginmachine = {
-  context: {},
-  id: 'mainMachine',
-  initial: 'unauthenticated',
-  states: {
-    unauthenticated: {
-      on: {
-        LOGIN: {
-          target: 'usercheck',
-        },
-      },
-      ...guestmachine,
-    },
-    usercheck: {
-      on: {
-        CANCEL: {
-          target: 'unauthenticated',
-        },
-        ERROR: {
-          target: 'error',
-        },
-        SUCCESS: {
-          target: 'authenticated',
-        },
-      },
-    },
-    error: {
-      on: {
-        LOGIN: {
-          target: 'usercheck',
-        },
-        CANCEL: {
-          target: 'unauthenticated',
-        },
-      },
-    },
-    authenticated: {
-      on: {
-        EDITPROFILE: {
-          target: 'editprofile',
-        },
-        LOGOUT: {
-          target: 'unauthenticated',
-        },
-      },
-      ...usermachine,
-    },
-    editprofile: {
-      on: {
-        ERROR: {
-          target: 'editprofile',
-          internal: false,
-        },
-        SUCCESS: {
-          target: 'authenticated',
-        },
-      },
-    },
-  },
-};
-
 // eslint-disable-next-line prefer-const
 let mainfunctions = guestfunctions;
 mainfunctions.actions = { ...mainfunctions.actions, ...userfunctions.actions };
-console.log(mainfunctions.actions);
 
-const mainMachine = createMachine(loginmachine, mainfunctions);
+const mainfsm = loginmachine;
+mainfsm.states.authenticated = {
+  ...mainfsm.states.authenticated,
+  ...usermachine,
+};
+mainfsm.states.unauthenticated = {
+  ...mainfsm.states.unauthenticated,
+  ...guestmachine,
+};
+
+const mainMachine = createMachine(mainfsm, mainfunctions);
 
 const mainService = interpret(mainMachine);
 
+// eslint-disable-next-line no-console
 mainService.onTransition(state => console.log(state.value));
 mainService.start();
 
