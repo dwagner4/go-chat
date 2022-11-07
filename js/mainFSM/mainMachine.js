@@ -1,4 +1,5 @@
 import { guestfunctions } from './guestmachine.js';
+import { userfunctions } from './usermachine.js';
 
 // eslint-disable-next-line no-undef
 const { createMachine, interpret } = XState;
@@ -110,6 +111,8 @@ const loginmachine = {
 
 // eslint-disable-next-line prefer-const
 let mainfunctions = guestfunctions;
+mainfunctions.actions = { ...mainfunctions.actions, ...userfunctions.actions };
+console.log(mainfunctions.actions);
 
 const mainMachine = createMachine(loginmachine, mainfunctions);
 

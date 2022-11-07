@@ -53,9 +53,17 @@ const successbtn = document.querySelector('#successbtn');
 successbtn.onclick = () => {
   mainService.send({ type: 'SUCCESS' });
 };
+const profilebtn = document.querySelector('#profilebtn');
+profilebtn.onclick = () => {
+  mainService.send({ type: 'EDITPROFILE' });
+};
 const errorbtn = document.querySelector('#errorbtn');
 errorbtn.onclick = () => {
   mainService.send({ type: 'ERROR' });
+};
+const logoutbtn = document.querySelector('#logoutbtn');
+logoutbtn.onclick = () => {
+  mainService.send({ type: 'LOGOUT' });
 };
 
 const caption = document.querySelector('#caption');
@@ -121,7 +129,7 @@ let currentStateStr = null;
 mainService.subscribe(state => {
   homebtn.style.display = state.context.homebtn;
   termbtn.style.display = state.context.termbtn;
-  caption.innerHTML = state.value;
+  caption.innerHTML = parseState(state.value);
 
   // changing world, don't want to restart world if not changed
   const stateStr = parseState(state.value);
