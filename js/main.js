@@ -42,6 +42,7 @@ const firebaseApp = initializeApp(firebaseConfig);
 const auth = getAuth(firebaseApp);
 // const db = getFirestore(firebaseApp)
 // const usergames = collection( db, 'games')
+// Initialize the FirebaseUI Widget using Firebase.
 
 /** detect auth state */
 onAuthStateChanged(auth, user => {
