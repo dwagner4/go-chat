@@ -4,11 +4,9 @@ const loginmachine = {
   initial: 'unauthenticated',
   states: {
     unauthenticated: {
-      entry: [() => console.log('fuck you too')],
       on: {
         LOGIN: {
           target: 'usercheck',
-          actions: [() => console.log('fuck you')],
         },
       },
     },

@@ -1,28 +1,56 @@
 /* eslint-disable new-cap */
+
+import { initializeApp } from 'firebase/app';
+// import { getAnalytics } from "firebase/analytics";
+import { getAuth, onAuthStateChanged } from 'firebase/auth';
+// import { getFirestore, collection } from 'firebase/firestore';
 // eslint-disable-next-line import/no-unresolved
 // import { gsap } from 'gsap';
 
-/** import the Finite State Machine */
+/**
+ * import the Finite State Machine
+ */
 import { mainService } from './mainFSM/mainMachine.js';
-
-/** import the stage and the initial world */
-// import Act1 from './stages/Act1.js';
 
 /**
  * connect to backend
- *
- * For Firebase
- * import { getMyConfig } from '../config.js';
- *   Import the functions you need from the SDKs you need
- *   eslint-disable-next-line import/order
- * import { initializeApp } from 'firebase/app';
- *   TODO: Add SDKs for Firebase products that you want to use
- *   https://firebase.google.com/docs/web/setup#available-libraries
- * const firebaseConfig = getMyConfig();
- *   Initialize Firebase
- *   eslint-disable-next-line no-unused-vars
- * const app = initializeApp(firebaseConfig);
  */
+
+// Your web app's Firebase configuration
+// For Firebase JS SDK v7.20.0 and later, measurementId is optional
+const firebaseConfig = {
+  apiKey: 'AIzaSyCSs9KYOLZgvFMunJZ7d821KFmzrW7rK-U',
+  authDomain: 'go-chat-c0097.firebaseapp.com',
+  projectId: 'go-chat-c0097',
+  storageBucket: 'go-chat-c0097.appspot.com',
+  messagingSenderId: '668110828333',
+  appId: '1:668110828333:web:cbcd00526e565e656d19a4',
+  measurementId: 'G-LHZ89WFFGR',
+};
+
+// eslint-disable-next-line no-restricted-globals
+if (location.hostname === 'localhost') {
+  // eslint-disable-next-line no-undef
+  config = {
+    databaseURL: 'http://localhost:9000?ns=go-chat',
+  };
+}
+
+/** initialize firebase services  */
+const firebaseApp = initializeApp(firebaseConfig);
+// const analytics = getAnalytics(firebaseApp);
+const auth = getAuth(firebaseApp);
+// const db = getFirestore(firebaseApp)
+// const usergames = collection( db, 'games')
+
+/** detect auth state */
+onAuthStateChanged(auth, user => {
+  if (user !== null) {
+    console.log('Logged in');
+  } else {
+    console.log('no user');
+  }
+});
 
 /**
  * identify html elements and attach listeners
