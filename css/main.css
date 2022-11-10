@@ -106,6 +106,24 @@ body {
   text-align: center;
 }
 
+#login {
+  color: var(--maximum-yellow-red);
+  position: absolute;
+  margin-left: 35%;
+  width: 30%;
+  padding: 20px;
+  margin-top: 75px;
+  font-size: 32px;
+  font-weight:bold;
+  text-align: center;
+}
+
+.userpwbtn {
+  margin: 20px;
+  margin-left: 25%;
+  width: 50%;
+}
+
 @media screen and (min-device-width: 320px) and (max-device-width: 780px) {
   /* .btn {
     position: fixed;

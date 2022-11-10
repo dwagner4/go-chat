@@ -2,10 +2,18 @@
 
 import { initializeApp } from 'firebase/app';
 // import { getAnalytics } from "firebase/analytics";
-import { getAuth, onAuthStateChanged } from 'firebase/auth';
+import {
+  getAuth,
+  onAuthStateChanged,
+  signInWithEmailAndPassword,
+  createUserWithEmailAndPassword,
+  connectAuthEmulator,
+  signOut,
+} from 'firebase/auth';
 // import { getFirestore, collection } from 'firebase/firestore';
 // eslint-disable-next-line import/no-unresolved
 // import { gsap } from 'gsap';
+// import {html, render} from 'lit-html';
 
 /**
  * import the Finite State Machine
@@ -29,17 +37,22 @@ const firebaseConfig = {
 };
 
 // eslint-disable-next-line no-restricted-globals
-if (location.hostname === 'localhost') {
-  // eslint-disable-next-line no-undef
-  config = {
-    databaseURL: 'http://localhost:9000?ns=go-chat',
-  };
-}
+console.log(location.hostname);
+
+// eslint-disable-next-line no-restricted-globals
+// if (location.hostname === '192.168.86.220') {
+//   console.log("Yo Dean")
+//   // eslint-disable-next-line no-undef
+//   config = {
+//     databaseURL: 'http://localhost:9000?ns=go-chat',
+//   };
+// }
 
 /** initialize firebase services  */
 const firebaseApp = initializeApp(firebaseConfig);
 // const analytics = getAnalytics(firebaseApp);
 const auth = getAuth(firebaseApp);
+connectAuthEmulator(auth, 'http://localhost:9099');
 // const db = getFirestore(firebaseApp)
 // const usergames = collection( db, 'games')
 // Initialize the FirebaseUI Widget using Firebase.
@@ -96,6 +109,81 @@ logoutbtn.onclick = () => {
 };
 
 const caption = document.querySelector('#caption');
+
+const email = document.querySelector('#email');
+let emailValue = '';
+const emailChgHandler = e => {
+  emailValue = e.target.value;
+};
+email.addEventListener('input', emailChgHandler);
+
+const password = document.querySelector('#password');
+let passwordValue = '';
+const pwChgHandler = e => {
+  passwordValue = e.target.value;
+};
+password.addEventListener('input', pwChgHandler);
+
+const userpwbtn = document.querySelector('#userpwbtn');
+userpwbtn.onclick = () => {
+  signInWithEmailAndPassword(auth, emailValue, passwordValue)
+    .then(userCredential => {
+      // Signed in
+      const { user } = userCredential;
+      console.log(user);
+      // ...
+    })
+    .catch(error => {
+      const errorCode = error.code;
+      const errorMessage = error.message;
+      console.log(errorCode, errorMessage);
+    });
+};
+
+const newuserbtn = document.querySelector('#newuserbtn');
+newuserbtn.onclick = () => {
+  createUserWithEmailAndPassword(auth, emailValue, passwordValue)
+    .then(userCredential => {
+      // Signed in
+      const { user } = userCredential;
+      console.log(user);
+      // ...
+    })
+    .catch(error => {
+      const errorCode = error.code;
+      const errorMessage = error.message;
+      console.log(errorCode, errorMessage);
+      // ..
+    });
+};
+
+const signoutbtn = document.querySelector('#signoutbtn');
+signoutbtn.onclick = () => {
+  signOut(auth)
+    .then(() => {
+      // Sign-out successful.
+    })
+    .catch(e => {
+      console.log(e);
+      // An error happened.
+    });
+};
+
+// const clicktest = () => {console.log("fuck you Dean")}
+
+// const pwform = html`<div class="login" id="login">
+//   <h1>Login to Web App</h1>
+//   <form method="post" action="">
+//     <span id="formerror"></span>
+//     <p><input type="text" id="name" name="login" value="" placeholder="Username or Email"></p>
+//     <p><input type="password" id="password" name="password" value="" placeholder="Password"></p>
+//     <p class="submit">ggggg<div class="btn" id="loginbtn" onclick="() => {console.log('fuck you Dean')}" >Sign In</div></p>
+//   </form>
+//   </div>
+// `
+
+// const page = document.getElementById('htmlpage')
+// render( pwform, page )
 
 // const fadeDuration = 1;
 
