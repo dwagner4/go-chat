@@ -57,14 +57,87 @@ connectAuthEmulator(auth, 'http://localhost:9099');
 // const usergames = collection( db, 'games')
 // Initialize the FirebaseUI Widget using Firebase.
 
+/** PASSWORD Login
+ *
+ *
+ */
+
 /** detect auth state */
 onAuthStateChanged(auth, user => {
-  if (user !== null) {
-    console.log('Logged in');
+  if (user) {
+    console.log(user);
   } else {
     console.log('no user');
   }
 });
+
+const email = document.querySelector('#email');
+// let emailValue = '';
+const password = document.querySelector('#password');
+// let passwordValue = '';
+const userpwbtn = document.querySelector('#userpwbtn');
+const newuserbtn = document.querySelector('#newuserbtn');
+const signoutbtn = document.querySelector('#signoutbtn');
+// const formerror = document.querySelector('#formerror');
+
+// const emailChgHandler = e => {
+//   emailValue = e.target.value;
+// };
+// email.addEventListener('input', emailChgHandler);
+
+// const pwChgHandler = e => {
+//   passwordValue = e.target.value;
+// };
+// password.addEventListener('input', pwChgHandler);
+
+userpwbtn.onclick = () => {
+  mainService.send({ type: 'LOGIN' });
+  console.log('aaa');
+  const emailValue = email.value;
+  const passwordValue = password.value;
+
+  signInWithEmailAndPassword(auth, emailValue, passwordValue)
+    .then(userCredential => {
+      mainService.send({ type: 'SUCCESS', data: userCredential });
+      console.log('ccc');
+    })
+    .catch(error => {
+      mainService.send({ type: 'ERROR', data: error });
+      console.log('ddd');
+    });
+};
+
+newuserbtn.onclick = () => {
+  mainService.send({ type: 'REGISTER' });
+  console.log('bbb');
+  const emailValue = email.value;
+  const passwordValue = password.value;
+  createUserWithEmailAndPassword(auth, emailValue, passwordValue)
+    .then(userCredential => {
+      mainService.send({ type: 'SUCCESS', data: userCredential });
+      console.log('eee');
+    })
+    .catch(e => {
+      mainService.send({ type: 'ERROR', data: e });
+      console.log('fff');
+    });
+};
+
+signoutbtn.onclick = () => {
+  mainService.send({ type: 'LOGOUT' });
+  console.log('ggg');
+  signOut(auth)
+    .then(() => {
+      mainService.send({ type: 'SUCCESS' });
+      console.log('hhh');
+    })
+    .catch(e => {
+      mainService.send({ type: 'ERROR', data: e });
+      console.log('iii');
+    });
+};
+
+/** End of PASSWORD Login */
 
 /**
  * identify html elements and attach listeners
@@ -109,65 +182,6 @@ logoutbtn.onclick = () => {
 };
 
 const caption = document.querySelector('#caption');
-
-const email = document.querySelector('#email');
-let emailValue = '';
-const emailChgHandler = e => {
-  emailValue = e.target.value;
-};
-email.addEventListener('input', emailChgHandler);
-
-const password = document.querySelector('#password');
-let passwordValue = '';
-const pwChgHandler = e => {
-  passwordValue = e.target.value;
-};
-password.addEventListener('input', pwChgHandler);
-
-const userpwbtn = document.querySelector('#userpwbtn');
-userpwbtn.onclick = () => {
-  signInWithEmailAndPassword(auth, emailValue, passwordValue)
-    .then(userCredential => {
-      // Signed in
-      const { user } = userCredential;
-      console.log(user);
-      // ...
-    })
-    .catch(error => {
-      const errorCode = error.code;
-      const errorMessage = error.message;
-      console.log(errorCode, errorMessage);
-    });
-};
-
-const newuserbtn = document.querySelector('#newuserbtn');
-newuserbtn.onclick = () => {
-  createUserWithEmailAndPassword(auth, emailValue, passwordValue)
-    .then(userCredential => {
-      // Signed in
-      const { user } = userCredential;
-      console.log(user);
-      // ...
-    })
-    .catch(error => {
-      const errorCode = error.code;
-      const errorMessage = error.message;
-      console.log(errorCode, errorMessage);
-      // ..
-    });
-};
-
-const signoutbtn = document.querySelector('#signoutbtn');
-signoutbtn.onclick = () => {
-  signOut(auth)
-    .then(() => {
-      // Sign-out successful.
-    })
-    .catch(e => {
-      console.log(e);
-      // An error happened.
-    });
-};
 
 // const clicktest = () => {console.log("fuck you Dean")}
 

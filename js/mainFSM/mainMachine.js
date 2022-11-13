@@ -1,4 +1,4 @@
-import { loginmachine } from './loginmachine.js';
+import { pwloginmachine } from './pwloginmachine.js';
 import { guestfunctions, guestmachine } from './guestmachine.js';
 import { userfunctions, usermachine } from './usermachine.js';
 
@@ -9,7 +9,7 @@ const { createMachine, interpret } = XState;
 let mainfunctions = guestfunctions;
 mainfunctions.actions = { ...mainfunctions.actions, ...userfunctions.actions };
 
-const mainfsm = loginmachine;
+const mainfsm = pwloginmachine;
 mainfsm.states.authenticated = {
   ...mainfsm.states.authenticated,
   ...usermachine,

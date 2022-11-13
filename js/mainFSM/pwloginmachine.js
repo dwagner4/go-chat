@@ -1,4 +1,4 @@
-const loginmachine = {
+const pwloginmachine = {
   context: {},
   id: 'mainMachine',
   initial: 'unauthenticated',
@@ -6,27 +6,50 @@ const loginmachine = {
     unauthenticated: {
       on: {
         LOGIN: {
-          target: 'usercheck',
+          target: 'loginloading',
+        },
+        REGISTER: {
+          target: 'registerloading',
         },
       },
     },
-    usercheck: {
+    loginloading: {
       on: {
         CANCEL: {
           target: 'unauthenticated',
         },
         ERROR: {
-          target: 'error',
+          target: 'loginerror',
         },
         SUCCESS: {
           target: 'authenticated',
         },
       },
     },
-    error: {
+    loginerror: {
       on: {
         LOGIN: {
-          target: 'usercheck',
+          target: 'loginloading',
+        },
+        CANCEL: {
+          target: 'unauthenticated',
+        },
+      },
+    },
+    registerloading: {
+      on: {
+        SUCESS: {
+          target: 'authenticated',
+        },
+        ERROR: {
+          target: 'registererror',
+        },
+      },
+    },
+    registererror: {
+      on: {
+        REGISTER: {
+          target: 'authenticated',
         },
         CANCEL: {
           target: 'unauthenticated',
@@ -49,7 +72,7 @@ const loginmachine = {
           target: 'editprofile',
           internal: false,
         },
-        SUCCESS: {
+        RETURN: {
           target: 'authenticated',
         },
       },
@@ -57,4 +80,4 @@ const loginmachine = {
   },
 };
 
-export { loginmachine };
+export { pwloginmachine };
